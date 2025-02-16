@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development", // or 'production' when you build for prod
-  entry: "./src/index.js", // Entry point of your app
+  entry: "./src/index.tsx", // Entry point of your app
   output: {
     path: path.resolve(__dirname, "dist"), // Output directory (absolute path)
     filename: "bundle.js", // Output bundle file name
@@ -12,7 +12,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, // Apply babel-loader to .js and .jsx files
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -21,7 +21,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx"], // Allow imports without specifying .js or .jsx
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   plugins: [
     new HtmlWebpackPlugin({
