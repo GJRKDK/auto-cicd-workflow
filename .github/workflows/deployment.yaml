@@ -74,7 +74,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/.
+          publish_dir: ./dist
 
       - name: Print Deployment URL
         run: echo "Your production site is live at -> https://GJRKDK.github.io/auto-cicd-workflow/"
