@@ -15,10 +15,10 @@ jobs:
     if: github.ref == 'refs/heads/dev'
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -36,10 +36,10 @@ jobs:
     if: github.ref == 'refs/heads/test'
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -77,4 +77,4 @@ jobs:
           publish_dir: ./dist
 
       - name: Print Deployment URL
-        run: echo "Your production site is live at -> https://GJRKDK.github.io/auto-cicd-workflow/"
+        run: echo "Your production site is live at -> https://gjrkdk.github.io/auto-cicd-workflow/"
