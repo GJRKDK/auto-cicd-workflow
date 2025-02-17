@@ -7,9 +7,9 @@ on:
     branches: [dev, test, main]
 
 permissions:
-  contents: write      # For checking out code, etc.
-  pages: write         # Required by actions/deploy-pages@v1
-  id-token: write      # Required by actions/deploy-pages@v1
+  contents: write # For checking out code, etc.
+  pages: write # Required by actions/deploy-pages@v1
+  id-token: write # Required by actions/deploy-pages@v1
 
 jobs:
   ####################################################################
@@ -31,7 +31,7 @@ jobs:
         run: yarn install
 
       - name: Build (Dev)
-        run: yarn build  # Or a separate dev build if you prefer
+        run: yarn build # Or a separate dev build if you prefer
 
       - name: Run Tests
         run: yarn test
@@ -79,20 +79,20 @@ jobs:
         run: yarn install
 
       - name: Build (Production)
-        run: yarn build  # This should produce ./dist with index.html, bundle.js, etc.
+        run: yarn build # This should produce ./dist with index.html, bundle.js, etc.
 
       # Upload the dist folder as an artifact to be used by the deploy job
       - name: Upload artifact for Pages
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './dist'
+          path: "./dist"
 
   ####################################################################
   # PRODUCTION DEPLOY job - uses official "deploy-pages" action
   ####################################################################
   deploy-production:
     runs-on: ubuntu-latest
-    needs: build-production  # Waits for the build-production job to finish
+    needs: build-production # Waits for the build-production job to finish
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Deploy to GitHub Pages
@@ -103,4 +103,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print Deployment URL
-        run: echo "Your production site is live at: https://gjrkdk.github.io/auto-cicd-workflow/"
+        run: echo "Your production site is live at https://gjrkdk.github.io/auto-cicd-workflow/"
