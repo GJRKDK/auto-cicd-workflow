@@ -83,7 +83,7 @@ jobs:
 
       # Upload the dist folder as an artifact to be used by the deploy job
       - name: Upload artifact for Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: "./dist"
 
