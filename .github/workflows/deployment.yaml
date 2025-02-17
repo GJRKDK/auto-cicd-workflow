@@ -83,7 +83,7 @@ jobs:
 
       # Upload the dist folder as an artifact to be used by the deploy job
       - name: Upload artifact for Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: "./dist"
 
@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deploy
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
         with:
           # No need to specify publish_dir here, because it uses the artifact from "upload-pages-artifact"
           token: ${{ secrets.GITHUB_TOKEN }}
