@@ -7,7 +7,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"), // Output directory (absolute path)
     filename: "bundle.js", // Output bundle file name
-    publicPath: "/auto-cicd-workflow/",
     clean: true, // Clean the output directory before emit
   },
   module: {
