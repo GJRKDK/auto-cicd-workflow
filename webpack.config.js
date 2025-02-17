@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: "development", // or 'production' when you build for prod
+  mode: "production", // or 'production' when you build for prod
   entry: "./src/index.tsx", // Entry point of your app
   output: {
     path: path.resolve(__dirname, "dist"), // Output directory (absolute path)
