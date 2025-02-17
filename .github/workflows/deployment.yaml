@@ -77,4 +77,4 @@ jobs:
           publish_dir: ./dist
 
       - name: Print Deployment URL
-        run: echo "Your production site is live at: https://GJRKDK.github.io/auto-cicd-workflow/"
+        run: echo "Your production site is live at -> https://GJRKDK.github.io/auto-cicd-workflow/"
