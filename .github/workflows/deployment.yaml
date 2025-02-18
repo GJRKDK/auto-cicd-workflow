@@ -81,7 +81,7 @@ jobs:
 
           # Ensure a fresh clone of gh-pages
           rm -rf gh-pages
-          git clone --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
+          git clone --branch=gh-pages https://github.com/${{ github.repository }} gh-pages || git checkout --orphan gh-pages
 
           # Remove old content
           rm -rf gh-pages/*
@@ -92,7 +92,9 @@ jobs:
 
           cd gh-pages
 
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
           # Commit and force push changes
           git add .
           git commit -m "Deploy to GitHub Pages from ${GITHUB_SHA}" || echo "No changes to commit"
-          git push --force origin gh-pages
+          git push --force origin HEAD:gh-pages
