@@ -70,6 +70,11 @@ jobs:
       - name: Verify build output
         run: ls -l dist
 
+      - name: Configure Git Identity
+        run: |
+          git config --global user.email "gjrkdk"
+          git config --global user.name "89792219+GJRKZB@users.noreply.github.com"
+
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
