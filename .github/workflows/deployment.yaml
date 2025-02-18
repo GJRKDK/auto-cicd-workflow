@@ -59,7 +59,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+        node-version: 20
 
       - name: Install dependencies
         run: yarn install
@@ -70,31 +70,7 @@ jobs:
       - name: Verify build output
         run: ls -l dist
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "gjrkdk"
-          git config --global user.email "89792219+GJRKZB@users.noreply.github.com"
-
       - name: Deploy to GitHub Pages
-        run: |
-          BUILD_DIR="dist"
-
-          # Ensure a fresh clone of gh-pages
-          rm -rf gh-pages
-          git clone --branch=gh-pages https://github.com/${{ github.repository }} gh-pages || git checkout --orphan gh-pages
-
-          # Remove old content
-          rm -rf gh-pages/*
-          rm -rf gh-pages/.??*
-
-          # Copy new build files
-          cp -r $BUILD_DIR/* gh-pages/
-
-          cd gh-pages
-
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-          # Commit and force push changes
-          git add .
-          git commit -m "Deploy to GitHub Pages from ${GITHUB_SHA}" || echo "No changes to commit"
-          git push --force origin HEAD:gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn deploy
