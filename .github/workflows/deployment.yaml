@@ -72,8 +72,8 @@ jobs:
 
       - name: Configure Git Identity
         run: |
-          git config --global user.email "gjrkdk"
-          git config --global user.name "89792219+GJRKZB@users.noreply.github.com"
+          git config --global user.name "gjrkdk"
+          git config --global user.email "89792219+GJRKZB@users.noreply.github.com"
 
       - name: Deploy to GitHub Pages
         env:
