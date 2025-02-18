@@ -67,6 +67,9 @@ jobs:
       - name: Build (Prod)
         run: yarn build
 
+      - name: Verify build output
+        run: ls -l dist
+
       - name: Configure Git
         run: |
           git config --global user.name "gjrkdk"
@@ -76,15 +79,20 @@ jobs:
         run: |
           BUILD_DIR="dist"
 
-          # Clone the gh-pages branch in a separate directory
-          git clone --depth=1 --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
+          # Ensure a fresh clone of gh-pages
+          rm -rf gh-pages
+          git clone --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
 
-          # Remove old content and copy new build files
+          # Remove old content
           rm -rf gh-pages/*
+          rm -rf gh-pages/.??*
+
+          # Copy new build files
           cp -r $BUILD_DIR/* gh-pages/
 
-          # Commit and push changes
           cd gh-pages
+
+          # Commit and force push changes
           git add .
-          git commit -m "Deploy to GitHub Pages from ${GITHUB_SHA}"
-          git push origin gh-pages
+          git commit -m "Deploy to GitHub Pages from ${GITHUB_SHA}" || echo "No changes to commit"
+          git push --force origin gh-pages
