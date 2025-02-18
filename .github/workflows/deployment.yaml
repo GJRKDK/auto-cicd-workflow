@@ -6,15 +6,7 @@ on:
   pull_request:
     branches: [dev, test, main]
 
-permissions:
-  contents: write # For checking out code, etc.
-  pages: write # Required by actions/deploy-pages@v1
-  id-token: write # Required by actions/deploy-pages@v1
-
 jobs:
-  ####################################################################
-  # DEV stage - runs when pushing/PR to "dev" branch
-  ####################################################################
   dev:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
@@ -25,20 +17,17 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: yarn install
 
       - name: Build (Dev)
-        run: yarn build # Or a separate dev build if you prefer
+        run: yarn build
 
       - name: Run Tests
         run: yarn test
 
-  ####################################################################
-  # TEST stage - runs when pushing/PR to "test" branch
-  ####################################################################
   test:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/test'
@@ -49,7 +38,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: yarn install
@@ -60,10 +49,7 @@ jobs:
       - name: Run Tests
         run: yarn test
 
-  ####################################################################
-  # PRODUCTION BUILD job - runs when pushing/PR to "main" branch
-  ####################################################################
-  build-production:
+  production:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -73,34 +59,32 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install dependencies
         run: yarn install
 
-      - name: Build (Production)
-        run: yarn build # This should produce ./dist with index.html, bundle.js, etc.
+      - name: Build (Prod)
+        run: yarn build
 
-      # Upload the dist folder as an artifact to be used by the deploy job
-      - name: Upload artifact for Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./dist"
+      - name: Configure Git
+        run: |
+          git config --global user.name "gjrkdk"
+          git config --global user.email "89792219+GJRKZB@users.noreply.github.com"
 
-  ####################################################################
-  # PRODUCTION DEPLOY job - uses official "deploy-pages" action
-  ####################################################################
-  deploy-production:
-    runs-on: ubuntu-latest
-    needs: build-production # Waits for the build-production job to finish
-    if: github.ref == 'refs/heads/main'
-    steps:
       - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v3
-        with:
-          # No need to specify publish_dir here, because it uses the artifact from "upload-pages-artifact"
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BUILD_DIR="dist"
 
-      - name: Print Deployment URL
-        run: echo "Your production site is live at https://gjrkdk.github.io/auto-cicd-workflow/"
+          # Clone the gh-pages branch in a separate directory
+          git clone --depth=1 --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
+
+          # Remove old content and copy new build files
+          rm -rf gh-pages/*
+          cp -r $BUILD_DIR/* gh-pages/
+
+          # Commit and push changes
+          cd gh-pages
+          git add .
+          git commit -m "Deploy to GitHub Pages from ${GITHUB_SHA}"
+          git push origin gh-pages
